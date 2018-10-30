@@ -23,6 +23,13 @@ class TodoController extends Controller
         return Helper::withMessage($res, $status, 200);
     }
 
+    public function single($id)
+    {
+        $res    = $this->todo->findOrFail($id);
+        $status = ($res->count() > 0) ? Res::SUCCESS_CODE : Res::ERROR_CODE; 
+        return Helper::withMessage($res, $status, 200);
+    }
+
     public function create(Request $request)
     {
         $this->validate($request, [
@@ -37,14 +44,14 @@ class TodoController extends Controller
     public function update($id, Request $request)
     {
        $resp = $this->todo->updateHelper($id, $request);
-       $status = ($resp) ? Res::SUCCESS_CODE: Res::ERROR_CODE;
-       return Helper::withMessage([], $status, 200);
+       $todo = ($resp) ? Res::SUCCESS_CODE: Res::ERROR_CODE;
+       return Helper::withMessage($resp, $todo, 200);
     }
 
-    public function delete()
+    public function delete($id)
     {
-
+        $resp = $this->todo->deleteHelper($id);
+        $todo = ($resp) ? Res::SUCCESS_CODE: Res::ERROR_CODE;
+        return Helper::withMessage([], $todo, 200);
     }
-
-    //
 }

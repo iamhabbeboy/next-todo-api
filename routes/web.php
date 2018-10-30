@@ -11,10 +11,14 @@
 |
 */
 
-// $router->get('/', function () use ($router) {
-//     return $router->app->version();
-// });
-$router->get('/', 		   'TodoController@index');
-$router->post('/create',   'TodoController@create');
-$router->put('/update',    'TodoController@update');
-$router->delete('/delete', 'TodoController@delete');
+$router->get('/', function() use ($router) {
+	echo "API Version 1";
+});
+$router->post('/auth/login', 'AuthController@authenticate');
+$router->group(['prefix' => 'api', 'middleware' => 'jwt.auth'], function($router) {
+	$router->get('/', 		   		'TodoController@index');
+	$router->get('/{id}',	   		'TodoController@single');
+	$router->post('/create',   		'TodoController@create');
+	$router->put('/update/{id}',    'TodoController@update');
+	$router->delete('/delete/{id}', 'TodoController@delete');
+});

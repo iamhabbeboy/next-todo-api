@@ -15,11 +15,17 @@ class Todo extends Model
 		return $this->create($request->all());
 	}
 
-	public function updateHelper(int $id, object $request)
+	public function updateHelper(int $id, $request)
 	{
 		if(!$id) return false;	
 		$todo = $this->findOrFail($id);
 		$todo->update($request->all());
 		return $todo;
+	}
+
+	public function deleteHelper(int $id)
+	{
+		if(!$id) return false;
+		return $this->findOrFail($id)->delete();
 	}
 }
